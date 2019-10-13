@@ -41,11 +41,19 @@ RUN apt-get install -y libargon2-0-dev libnghttp2-dev build-essential cmake xz-u
      --with-config-file-path=/app/$php/etc --with-config-file-scan-dir=/app/$php/etc/conf.d \
      --with-password-argon2 --with-curl --with-openssl --with-iconv" ;\
     eval $configure ;\
-    make -j8 && make install ;\
+    make -j8 && make install && cp php.ini-production /app/$php/etc/php.ini ;\
     test -d /app/php || ln -s /app/$php /app/php ;\
     mkdir -p /etc/service/php ; \
     bash -c 'echo -e "#!/bin/bash\nexec /app/php/sbin/php-fpm --nodaemonize --fpm-config /app/php/etc/php-fpm.conf" > /etc/service/php/run' ; \
     chmod 755 /etc/service/php/run ;\
+    echo -e '\n\n\n\n\n\n\n\n\n' | /app/php/bin/pecl install -f amqp imagick mcrypt memcached mongodb redis; \
+    mkdir -p /etc/service/php /run/php ; \
+    sed -i -e 's?^error_log =.*?error_log = /dev/stderr?g' /app/$php/etc/php-fpm.conf.default ;\
+    grep -v '^;' /app/php-72/etc/php-fpm.conf.default | grep -v '^$' > /app/$php/etc/php-fpm.conf ;\
+    sed -i -e 's/^listen =.*/listen = 0.0.0.0:9000/g' -e 's/www-data/nobody/g' /app/$php/etc/php-fpm.d/www.conf.default ;\
+    grep -v '^;' /app/$php/etc/php-fpm.d/www.conf.default| grep -v '^$'  > /app/$php/etc/php-fpm.d/www.conf ;\
+    bash -c 'echo -e "extension=amqp.so\nextension=imagick.so\nextension=mcrypt.so\nextension=memcached.so\nextension=mongodb.so\nextension=redis.so\n" >> /app/$php/etc/conf.d/99-php.ini' ;\
+    bash -c 'echo -e "expose_php=Off\n;upload_max_filesize=80M\npost_max_size=80M\ndate.timezone=Asia/Shanghai" >> /app/$php/etc/conf.d/99-php.ini' ;\
     apt-get clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /opt/*
 
 
