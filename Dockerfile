@@ -2,10 +2,6 @@ FROM ubuntu:18.04
 
 ENV TZ=Asia/Shanghai LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive php=php-7.2 ver=7.2.23
 
-ADD . /opt/
-
-WORKDIR /opt
-
 RUN sed -i -e 's@ .*.ubuntu.com@ http://mirrors.aliyun.com@g' -e 's@ .*.debian.org@ http://mirrors.aliyun.com@g' /etc/apt/sources.list ;\
     apt-get update ; apt-get install -y --no-install-recommends ca-certificates curl wget apt-transport-https tzdata \
     dumb-init iproute2 iputils-ping iputils-arping telnet less vim-tiny unzip gosu fonts-dejavu-core tcpdump \
@@ -22,7 +18,11 @@ RUN sed -i -e 's@ .*.ubuntu.com@ http://mirrors.aliyun.com@g' -e 's@ .*.debian.o
     bash -c 'echo -e "#!/bin/bash\nexec /usr/sbin/cron -f" > /etc/service/cron/run' ;\
     chmod 755 /etc/service/cron/run /etc/service/syslog/run 
  
- RUN apt-get install -y libargon2-0-dev libnghttp2-dev build-essential cmake xz-utils perl-base libmagickwand-dev \
+ADD . /opt/
+
+WORKDIR /opt
+
+RUN apt-get install -y libargon2-0-dev libnghttp2-dev build-essential cmake xz-utils perl-base libmagickwand-dev \
        imagemagick librabbitmq-dev libxml2-dev libc6-dev autoconf  libevent-dev libsodium-dev libssl-dev \
        libmcrypt-dev libcurl4-openssl-dev libmemcached-dev re2c libpcre3-dev libwebp-dev mysql-client libpq-dev libpqxx-dev ;\
      test -f php-$ver.tar.xz && tar Jtf php-$ver.tar.xz || wget -c http://www.php.net/distributions/php-$ver.tar.xz  ;\
