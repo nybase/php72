@@ -2,9 +2,9 @@ FROM ubuntu:18.04
 
 ENV TZ=Asia/Shanghai LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive php=php-7.2 ver=7.2.23
 
-ADD . /tmp/
+ADD . /opt/
 
-WORKDIR /tmp
+WORKDIR /opt
 
 RUN sed -i -e 's@ .*.ubuntu.com@ http://mirrors.aliyun.com@g' -e 's@ .*.debian.org@ http://mirrors.aliyun.com@g' /etc/apt/sources.list ;\
     apt-get update ; apt-get install -y --no-install-recommends ca-certificates curl wget apt-transport-https tzdata \
@@ -46,7 +46,7 @@ RUN sed -i -e 's@ .*.ubuntu.com@ http://mirrors.aliyun.com@g' -e 's@ .*.debian.o
     mkdir -p /etc/service/php ; \
     bash -c 'echo -e "#!/bin/bash\nexec /app/php/sbin/php-fpm --nodaemonize --fpm-config /app/php/etc/php-fpm.conf" > /etc/service/php/run' ; \
     chmod 755 /etc/service/php/run ;\
-    apt-get clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    apt-get clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /opt/*
 
 
  
