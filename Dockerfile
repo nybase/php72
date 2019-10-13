@@ -2,7 +2,7 @@ FROM ubuntu:18.04 AS build-php
 
 ENV TZ=Asia/Shanghai LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive php=php-7.2 ver=7.2.23
 
-
+ADD . /tmp/
 
 WORKDIR /tmp
 
