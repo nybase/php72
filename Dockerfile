@@ -20,8 +20,7 @@ RUN sed -i -e 's@ .*.ubuntu.com@ http://mirrors.aliyun.com@g' -e 's@ .*.debian.o
     mkdir -p /etc/service/cron /etc/service/syslog ;\
     bash -c 'echo -e "#!/bin/bash\nexec /usr/sbin/rsyslogd -n" > /etc/service/syslog/run' ;\
     bash -c 'echo -e "#!/bin/bash\nexec /usr/sbin/cron -f" > /etc/service/cron/run' ;\
-    chmod 755 /etc/service/cron/run /etc/service/syslog/run ;\
-    apt-get clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    chmod 755 /etc/service/cron/run /etc/service/syslog/run 
  
  RUN apt-get install libargon2-0-dev libnghttp2-dev build-essential cmake xz-utils perl-base libmagickwand-dev \
        imagemagick librabbitmq-dev libxml2-dev libc6-dev autoconf  libevent-dev libsodium-dev libssl-dev \
@@ -46,7 +45,8 @@ RUN sed -i -e 's@ .*.ubuntu.com@ http://mirrors.aliyun.com@g' -e 's@ .*.debian.o
     test -d /app/php || ln -s /app/$php /app/php ;\
     mkdir -p /etc/service/php ; \
     bash -c 'echo -e "#!/bin/bash\nexec /app/php/sbin/php-fpm --nodaemonize --fpm-config /app/php/etc/php-fpm.conf" > /etc/service/php/run' ; \
-    chmod 755 /etc/service/php/run
+    chmod 755 /etc/service/php/run ;\
+    apt-get clean  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
  
