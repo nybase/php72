@@ -40,7 +40,7 @@ RUN apt-get install -y libargon2-0-dev libnghttp2-dev build-essential cmake xz-u
      --with-pdo-pgsql --with-pgsql \
      --with-config-file-path=/app/$php/etc --with-config-file-scan-dir=/app/$php/etc/conf.d \
      --with-password-argon2 --with-curl --with-openssl --with-iconv" ;\
-     $(configure) ;\
+    eval $configure ;\
     make -j8 && make install ;\
     test -d /app/php || ln -s /app/$php /app/php ;\
     mkdir -p /etc/service/php ; \
