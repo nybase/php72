@@ -25,7 +25,7 @@ RUN sed -i -e 's@ .*.ubuntu.com@ http://mirrors.aliyun.com@g' -e 's@ .*.debian.o
  RUN apt-get install libargon2-0-dev libnghttp2-dev build-essential cmake xz-utils perl-base libmagickwand-dev \
        imagemagick librabbitmq-dev libxml2-dev libc6-dev autoconf  libevent-dev libsodium-dev libssl-dev \
        libmcrypt-dev libcurl4-openssl-dev libmemcached-dev re2c libpcre3-dev libwebp-dev mysql-client libpq-dev libpqxx-dev ;\
-     test -f php-$ver.tar.xz && tar Jtf php-7.2.23.tar.xz || wget -c http://www.php.net/distributions/php-$ver.tar.xz  ;\
+     test -f php-$ver.tar.xz && tar Jtf php-$ver.tar.xz || wget -c http://www.php.net/distributions/php-$ver.tar.xz  ;\
      tar Jxf php-$ver.tar.xz  && cd php-$ver ;\
      configure="./configure --prefix=/app/$php --enable-sockets --enable-soap --enable-zip \
      --enable-zend-signals --enable-mysqlnd --with-mysqli --enable-opcache --enable-pcntl \
