@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS build-php
+FROM ubuntu:18.04
 
 ENV TZ=Asia/Shanghai LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive php=php-7.2 ver=7.2.23
 
@@ -6,7 +6,8 @@ ADD . /tmp/
 
 WORKDIR /tmp
 
-RUN apt-get update ; apt-get install -y --no-install-recommends ca-certificates curl wget apt-transport-https tzdata \
+RUN sed -i -e 's@ .*.ubuntu.com@ http://mirrors.aliyun.com@g' -e 's@ .*.debian.org@ http://mirrors.aliyun.com@g' /etc/apt/sources.list ;\
+    apt-get update ; apt-get install -y --no-install-recommends ca-certificates curl wget apt-transport-https tzdata \
     dumb-init iproute2 iputils-ping iputils-arping telnet less vim-tiny unzip gosu fonts-dejavu-core tcpdump \
     net-tools socat netcat traceroute jq mtr-tiny dnsutils psmisc \
     cron logrotate runit rsyslog-kafka gosu bsdiff libtcnative-1 libjemalloc-dev ; \
